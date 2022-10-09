@@ -109,7 +109,7 @@ jobs:
           docker volume create ncdata
           platform=linux/${ARCH?}
           [[ "$ARCH" == 'x86' ]] && platform=linux/amd64
-          tmpdir=$(mktemp)
+          tmpdir=$(mktemp -d)
           pushd "$tmpdir" 
           cat <<EOF > ./Dockerfile
           FROM --platform=linux/${arch} ownyourbits/nextcloudpi:${{ steps.checkout_previous_version.outputs.previous_version }}
