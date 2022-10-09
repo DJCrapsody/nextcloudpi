@@ -67,6 +67,10 @@ jobs:
       VERSION: "${{ inputs.git_ref || github.ref }}"
       ARCH: "${{ inputs.arch || 'x86' }}"
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: "${{ env.VERSION }}"
       - name: Get previous release
         id: get_previous_version
         shell: bash
