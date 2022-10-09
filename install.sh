@@ -69,8 +69,11 @@ install_app    ncp.sh
 run_app_unsafe bin/ncp/CONFIG/nc-init.sh
 echo 'Moving data directory to a more sensible location'
 mkdir -p /opt/ncdata
-set_app_param nc-datadir.sh DATADIR '/opt/ncdata'
-run_app_unsafe bin/ncp/CONFIG/nc-datadir.sh
+(
+  export CFGDIR=etc/ncp-config.d
+  set_app_param nc-datadir.sh DATADIR '/opt/ncdata'
+  run_app_unsafe bin/ncp/CONFIG/nc-datadir.sh
+)
 rm /.ncp-image
 
 # skip on Armbian / Vagrant / LXD ...

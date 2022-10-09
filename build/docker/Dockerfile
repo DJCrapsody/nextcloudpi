@@ -144,6 +144,7 @@ COPY ncp-previewgenerator          /tmp/ncp-build/ncp-previewgenerator/
 COPY build/docker                  /tmp/ncp-build/build/docker/
 COPY ncp.sh update.sh post-inst.sh /tmp/ncp-build/
 COPY etc/ncp-config.d/nc-init.cfg /usr/local/etc/ncp-config.d/nc-init-copy.cfg
+COPY etc/ncp-config.d/nc-datadir.cfg /usr/local/etc/ncp-config.d/nc-datadir.cfg
 
 RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt \
 set -e; \
@@ -172,6 +173,8 @@ mkdir -p /opt/ncdata \
 set_app_param nc-datadir.sh DATADIR '/data-ro/ncdata' \
 run_app_unsafe bin/ncp/CONFIG/nc-datadir.sh \
 set_app_param nc-datadir.sh DATADIR '/data/ncdata' \
+# Remove nc-datadir.cfg as it's disabled in docker
+rm /usr/local/etc/nc-datadir.cfg \
 sed -i 's|data-ro|data|' /data-ro/nextcloud/config/config.php; \
 
 # fix default paths
