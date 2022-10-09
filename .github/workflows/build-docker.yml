@@ -112,7 +112,7 @@ jobs:
           tmpdir=$(mktemp -d)
           pushd "$tmpdir" 
           cat <<EOF > ./Dockerfile
-          FROM --platform=linux/${arch} ownyourbits/nextcloudpi:${{ steps.checkout_previous_version.outputs.previous_version }}
+          FROM --platform=linux/${ARCH} ownyourbits/nextcloudpi:${{ steps.checkout_previous_version.outputs.previous_version }}
   
           RUN echo 'Mutex posixsem' >> /etc/apache2/mods-available/ssl.conf
           EOF
