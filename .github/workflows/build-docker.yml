@@ -90,7 +90,7 @@ jobs:
             version="$(git describe --tags || true)"
             [[ "$version" =~ .*-.*-.* ]] || {
               git checkout HEAD~1
-              version="$(git describe --tags || echo 'latest)"
+              version="$(git describe --tags || echo latest)"
             }
             version="${version%-*-*}"
           fi
@@ -110,12 +110,13 @@ jobs:
           platform=linux/${ARCH?}
           [[ "$ARCH" == 'x86' ]] && platform=linux/amd64
           tmpdir=$(mktemp)
-          pushd "$tmpdir"
-          docker build . -t ncp-testing -f <EOF
+          pushd "$tmpdir" 
+          cat <<EOF > ./Dockerfile
           FROM --platform=linux/${arch} ownyourbits/nextcloudpi:${{ steps.checkout_previous_version.outputs.previous_version }}
   
           RUN echo 'Mutex posixsem' >> /etc/apache2/mods-available/ssl.conf
           EOF
+          docker build . -t ncp-testing -f Dockerfile
           popd
           rm -r "$tmpdir"
           docker run --platform "$platform" -v ncdata:/data -d --rm -p 8443:443 -p 4443:4443 --name nextcloudpi ncp-testing
