@@ -160,13 +160,18 @@ touch /.docker-image; \
 apt-get update; \
 apt-get install --no-install-recommends -y wget ca-certificates; \
 
-# install nextcloudpi
+# install nextcloudpiset_app_param nc-datadir.sh DATADIR '/data-ro/ncdata' \
 source /usr/local/etc/library.sh; \
 cd /tmp/ncp-build/; \
 install_app ncp.sh; \
 
 mv /usr/local/etc/ncp-config.d/nc-init-copy.cfg /usr/local/etc/ncp-config.d/nc-init.cfg; \
 run_app_unsafe bin/ncp/CONFIG/nc-init.sh; \
+echo 'Moving data directory to a more sensible location' \
+mkdir -p /opt/ncdata \
+set_app_param nc-datadir.sh DATADIR '/data-ro/ncdata' \
+run_app_unsafe bin/ncp/CONFIG/nc-datadir.sh \
+set_app_param nc-datadir.sh DATADIR '/data/ncdata' \
 sed -i 's|data-ro|data|' /data-ro/nextcloud/config/config.php; \
 
 # fix default paths
