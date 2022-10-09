@@ -75,7 +75,7 @@ jobs:
         id: get_previous_version
         shell: bash
         run: |
-          set -e
+          set -ex
           if [[ -n "${{ github.base_ref }}" ]]
           then
             version="${{ github.base_ref }}"
@@ -87,10 +87,10 @@ jobs:
             then
               git fetch -fu --tags origin ${{ env.VERSION }}:${{ env.VERSION }}
             fi
-            version="$(git describe --tags)"
+            version="$(git describe --tags || true)"
             [[ "$version" =~ .*-.*-.* ]] || {
               git checkout HEAD~1
-              version="$(git describe --tags)"
+              version="$(git describe --tags || echo 'latest)"
             }
             version="${version%-*-*}"
           fi
@@ -99,6 +99,7 @@ jobs:
             version="latest"
           }
           echo "Previous version is '$version'"
+          echo "PREVIOUS_VERSION=$version" >> "$GITHUB_ENV"
           echo "::set-output name=previous_version::${version}"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
