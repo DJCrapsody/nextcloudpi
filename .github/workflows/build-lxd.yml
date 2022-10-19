@@ -44,7 +44,7 @@ jobs:
           . ./build/buildlib.sh
           ARTIFACT_FILE="NextCloudPi_LXD_${VERSION//\//_}"
           lxc image export -q ncp/"${version}" "output/${ARTIFACT_FILE}"
-          echo "::set-output name=artifact_file::${ARTIFACT_FILE}.tar.gz"
+          echo "{artifact_file}={${ARTIFACT_FILE}.tar.gz}" >> $GITHUB_OUTPUT
       - name: upload LXD image to artifact store
         uses: actions/upload-artifact@v3
         with:
@@ -93,7 +93,7 @@ jobs:
           echo "Previous version is '$version'"
           git checkout "$version"
           echo "VERSION=$version" >> "$GITHUB_ENV"
-          echo "::set-output name=previous_version::${version}"
+          echo "{previous_version}={${version}}" >> $GITHUB_OUTPUT
       - uses: whywaita/setup-lxd@v1
         with:
           lxd_version: latest/stable
@@ -106,7 +106,7 @@ jobs:
           . ./build/buildlib.sh
           ARTIFACT_FILE="NextCloudPi_LXD_${VERSION//\//_}"
           lxc image export -q ncp/"${version}" "output/${ARTIFACT_FILE}"
-          echo "::set-output name=artifact_file::${ARTIFACT_FILE}.tar.gz"
+          echo "{artifact_file}={${ARTIFACT_FILE}.tar.gz}" >> $GITHUB_OUTPUT
       - name: upload LXD image to artifact store
         uses: actions/upload-artifact@v3
         with:
@@ -185,7 +185,7 @@ jobs:
           lxc publish -q ncp -f --alias "ncp/updated"
           mkdir -p output
           lxc image export -q "ncp/updated" "output/${ARTIFACT_FILE}"
-          echo "::set-output name=artifact_file::${ARTIFACT_FILE}.tar.gz"
+          echo "{artifact_file}={${ARTIFACT_FILE}.tar.gz}" >> $GITHUB_OUTPUT
       - name: upload LXD image to artifact store
         uses: actions/upload-artifact@v3
         with:

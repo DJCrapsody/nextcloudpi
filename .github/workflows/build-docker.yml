@@ -101,7 +101,7 @@ jobs:
           }
           echo "Previous version is '$version'"
           echo "PREVIOUS_VERSION=$version" >> "$GITHUB_ENV"
-          echo "::set-output name=previous_version::${version}"
+          echo "{previous_version}={${version}}" >> $GITHUB_OUTPUT
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
