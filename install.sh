@@ -69,12 +69,12 @@ install_app    ncp.sh
 run_app_unsafe bin/ncp/CONFIG/nc-init.sh
 echo 'Moving data directory to a more sensible location'
 mkdir -p /opt/ncdata
-[[ -f "/usr/local/etc/nc-datadir.cfg" ]] || {
+[[ -f "/usr/local/etc/ncp-config.d/nc-datadir.cfg" ]] || {
   should_rm_datadir_cfg=true
-  cp etc/ncp-config.d/nc-datadir.cfg /usr/local/etc/nc-datadir.cfg
+  cp etc/ncp-config.d/nc-datadir.cfg /usr/local/etc/ncp-config.d/nc-datadir.cfg
 }
 run_app_unsafe bin/ncp/CONFIG/nc-datadir.sh
-[[ -z "$should_rm_datadir_cfg" ]] || rm /usr/local/etc/nc-datadir.cfg
+[[ -z "$should_rm_datadir_cfg" ]] || rm /usr/local/etc/ncp-config.d/nc-datadir.cfg
 rm /.ncp-image
 
 # skip on Armbian / Vagrant / LXD ...
